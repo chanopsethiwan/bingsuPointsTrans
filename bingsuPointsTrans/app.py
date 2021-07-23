@@ -1,0 +1,1 @@
+from src.app import add_points_trans

@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  bingsuPointsTrans
+
+  Sample SAM Template for bingsuPointsTrans
+
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: python3.8
+    Environment:
+      Variables:
+        BINGSU_POINTS_TRANS_TABLE_NAME: !Ref PointsTransTable
+
+Resources:
+  AddPointsTransFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: bingsuPointsTrans/
+      Handler: app.add_points_trans
+      
+  PointsTransTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: transaction_id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: transaction_id
+          KeyType: HASH
+      TableName: "BingsuPointsTrans"
+
+Outputs:
+  AddPointsTransFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt AddPointsTransFunction.Arn
+  AddPointsTransFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt AddPointsTransFunctionRole.Arn
