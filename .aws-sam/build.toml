@@ -6,6 +6,6 @@ codeuri = "/Users/chap/bingsuPointsTrans/bingsuPointsTrans"
 runtime = "python3.8"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["AddPointsTransFunction"]
+functions = ["AddPointsTransFunction", "GetPointsTransByIdFunction"]
 
 [layer_build_definitions]

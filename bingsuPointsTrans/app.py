@@ -1,1 +1,1 @@
-from src.app import add_points_trans
+from src.app import add_points_trans, get_points_trans_by_id

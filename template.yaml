@@ -20,6 +20,12 @@ Resources:
       CodeUri: bingsuPointsTrans/
       Handler: app.add_points_trans
       
+  GetPointsTransByIdFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: bingsuPointsTrans/
+      Handler: app.get_points_trans_by_id
+      
   PointsTransTable:
     Type: AWS::DynamoDB::Table
     Properties:
