@@ -47,4 +47,4 @@ def get_all_points_trans_by_user_id(event, context):
     else:
         return {'status': 400}
     return {'status': 200,
-            'data': lst}
+            'data': lst[0:20]}
