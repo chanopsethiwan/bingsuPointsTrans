@@ -12,6 +12,7 @@ Globals:
     Environment:
       Variables:
         BINGSU_POINTS_TRANS_TABLE_NAME: !Ref PointsTransTable
+        BINGSU_TOTAL_CARBON_SUM_TABLE_NAME: !Ref TotalSumCarbonTable
 
 Resources:
   AddPointsTransFunction:
@@ -52,6 +53,18 @@ Resources:
           Projection: 
             ProjectionType: ALL
       TableName: "BingsuPointsTrans"
+
+  TotalSumCarbonTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: company
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: company
+          KeyType: HASH
+      TableName: "BingsuTotalCarbonSum"
 
 Outputs:
   AddPointsTransFunction:

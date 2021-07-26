@@ -37,3 +37,14 @@ class PynamoBingsuPointsTrans(Model):
     
     def returnJson(self):
         return vars(self).get('attribute_values')
+
+class PynamoBingsuCarbonTotalSum(Model):
+    ''' database to store user '''
+    class Meta:
+        table_name = os.environ.get('BINGSU_TOTAL_CARBON_SUM_TABLE_NAME')
+        region = 'ap-southeast-1'
+    company = UnicodeAttribute(hash_key = True)
+    total_amount_co2 = NumberAttribute()
+    
+    def returnJson(self):
+        return vars(self).get('attribute_values')
