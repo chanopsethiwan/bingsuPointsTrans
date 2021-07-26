@@ -6,6 +6,6 @@ codeuri = "C:\\Users\\Chulabutrach\\Documents\\Coding\\Projects\\bingsu\\bingsuP
 runtime = "python3.8"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["AddPointsTransFunction", "GetPointsTransByIdFunction", "GetAllPointsTransByUserIdFunction"]
+functions = ["AddPointsTransFunction", "GetPointsTransByIdFunction", "GetAllPointsTransByUserIdFunction", "GetTotalSumCarbonTransFunction", "AddSumCarbonTransFunction"]
 
 [layer_build_definitions]

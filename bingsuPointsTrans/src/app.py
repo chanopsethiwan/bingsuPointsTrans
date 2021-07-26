@@ -1,7 +1,7 @@
 import json
 import os
 from uuid import uuid4
-from .bingsuPointsTrans import PynamoBingsuPointsTrans
+from .bingsuPointsTrans import PynamoBingsuPointsTrans, PynamoBingsuCarbonTotalSum
 from datetime import datetime
 
 def add_points_trans(event, context):
@@ -48,3 +48,38 @@ def get_all_points_trans_by_user_id(event, context):
         return {'status': 400}
     return {'status': 200,
             'data': lst[0:20]}
+
+def get_total_carbon_sum(event, context):
+    company = {'foodpanda':0, 'grab':0, 'robinhood':0}
+    for item in company:
+        iterator = PynamoBingsuCarbonTotalSum.query(item)
+        total_sum_list = list(iterator)
+        lst = []
+        if len(total_sum_list) > 0:
+            for i in total_sum_list:
+                lst.append(i.returnJson())
+        else:
+            return {'status': 400}
+        company[item] = lst[0]['total_amount_co2']
+    return {'status': 200, 'data': company}
+
+def add_total_carbon_sum(event, context):
+    company = event['arguments']['company']
+    value = event['arguments']['value']
+    # get from db
+    iterator = PynamoBingsuCarbonTotalSum.query(company)
+    total_sum_list = list(iterator)
+    lst = []
+    if len(total_sum_list) > 0:
+        for i in total_sum_list:
+            lst.append(i.returnJson())
+    else:
+        return {'status': 400}
+    old_value = lst[0]['total_amount_co2']
+    new_value = old_value + value
+    total_carbon_sum_item = PynamoBingsuCarbonTotalSum(
+        company = company,
+        total_amount_co2 = new_value
+    )
+    total_carbon_sum_item.save()
+    return {'status': 200}
