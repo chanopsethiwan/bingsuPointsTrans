@@ -4,6 +4,7 @@ from uuid import uuid4
 from .bingsuPointsTrans import PynamoBingsuPointsTrans, PynamoBingsuCarbonTotalSum
 from datetime import datetime
 
+# input: user_id, points_amount, company, co2, restaurant, distance, item
 def add_points_trans(event, context):
     item = event['arguments']
     points_trans_item = PynamoBingsuPointsTrans(
@@ -22,6 +23,7 @@ def add_points_trans(event, context):
     points_trans_item.save()
     return {'status': 200}
 
+# input: transaction_id
 def get_points_trans_by_id(event, context):
     item = event['arguments']
     transaction_id = item['transaction_id']
@@ -35,7 +37,8 @@ def get_points_trans_by_id(event, context):
         return {'status': 400}
     return {'status': 200,
             'data': lst}
-    
+
+# input: user_id
 def get_all_points_trans_by_user_id(event, context):
     item = event['arguments']
     iterator = PynamoBingsuPointsTrans.user_id_index.query(item['user_id'])
@@ -49,6 +52,7 @@ def get_all_points_trans_by_user_id(event, context):
     return {'status': 200,
             'data': lst[0:20]}
 
+# input: return total sum of company
 def get_total_carbon_sum(event, context):
     company = {'foodpanda':0, 'grab':0, 'robinhood':0}
     for item in company:
@@ -63,6 +67,7 @@ def get_total_carbon_sum(event, context):
         company[item] = lst[0]['total_amount_co2']
     return {'status': 200, 'data': company}
 
+# input: company, value
 def add_total_carbon_sum(event, context):
     company = event['arguments']['company']
     value = event['arguments']['value']
