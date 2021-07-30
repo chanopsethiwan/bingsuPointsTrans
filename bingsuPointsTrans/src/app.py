@@ -94,7 +94,7 @@ def update_points_trans_for_packaging(event, context):
     item = event['arguments']
     transaction_id = item['transaction_id']
     user_id = item['user_id']
-    packaging_amount = event['packaging_amount']
+    packaging_amount = item['packaging_amount']
     packaging_co2 = packaging_amount*35
     iterator = PynamoBingsuPointsTrans.query(transaction_id)
     transaction_list = list(iterator)
