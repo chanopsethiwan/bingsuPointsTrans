@@ -18,7 +18,8 @@ def add_points_trans(event, context):
         distance = item['distance'],
         item = item['item'],
         packaging_co2 = item.get('packaging_co2', None),
-        packaging_amount = item.get('packaging_amount', None)
+        packaging_amount = item.get('packaging_amount', None),
+        packaging_flag = False
     )
     points_trans_item.save()
     return {'status': 200}
@@ -88,3 +89,36 @@ def add_total_carbon_sum(event, context):
     )
     total_carbon_sum_item.save()
     return {'status': 200}
+
+def update_points_trans_for_packaging(event, context):
+    item = event['arguments']
+    transaction_id = item['transaction_id']
+    user_id = item['user_id']
+    packaging_amount = event['packaging_amount']
+    packaging_co2 = packaging_amount*35
+    iterator = PynamoBingsuPointsTrans.query(transaction_id)
+    transaction_list = list(iterator)
+    lst = []
+    if len(transaction_list) > 0:
+        for transaction in transaction_list:
+            lst.append(transaction.returnJson())
+    else:
+        return {'status': 400}
+    current_dict = lst[0]
+    transaction_item = PynamoBingsuPointsTrans(
+        transaction_id = transaction_id,
+        user_id = user_id,
+        date_time = current_dict['date_time'],
+        points_amount = current_dict['points_amount'],
+        company_name = current_dict['company_name'],
+        co2_amount = current_dict['co2_amount'],
+        restaurant_name = current_dict['restaurant_name'],
+        distance = current_dict['distance'],
+        item = current_dict['item'],
+        packaging_co2 = packaging_co2,
+        packaging_amount = packaging_amount,
+        packaging_flag = True
+    )
+    transaction_item.save()
+    return {'status': 200}
+    

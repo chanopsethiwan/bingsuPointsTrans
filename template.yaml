@@ -44,6 +44,12 @@ Resources:
     Properties:
       CodeUri: bingsuPointsTrans/
       Handler: app.add_total_carbon_sum
+      
+  UpdatePointsTransForPackagingFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: bingsuPointsTrans/
+      Handler: app.update_points_trans_for_packaging
   
   PointsTransTable:
     Type: AWS::DynamoDB::Table

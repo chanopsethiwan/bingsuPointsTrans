@@ -1,5 +1,5 @@
 from pynamodb.models import Model
-from pynamodb.attributes import UnicodeAttribute, NumberAttribute
+from pynamodb.attributes import UnicodeAttribute, NumberAttribute, BooleanAttribute
 from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 import os
 
@@ -32,6 +32,7 @@ class PynamoBingsuPointsTrans(Model):
     item = NumberAttribute()
     packaging_co2 = NumberAttribute(null=True)
     packaging_amount = NumberAttribute(null=True)
+    packaging_flag = BooleanAttribute()
     
     user_id_index = UserIdIndex()
     
