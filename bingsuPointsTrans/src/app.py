@@ -2,6 +2,8 @@ import json
 import os
 from uuid import uuid4
 from .bingsuPointsTrans import PynamoBingsuPointsTrans, PynamoBingsuCarbonTotalSum
+import boto3
+from boto3.dynamodb.conditions import Key
 from datetime import datetime
 
 # input: user_id, points_amount, company, co2, restaurant, distance, item
@@ -120,5 +122,24 @@ def update_points_trans_for_packaging(event, context):
         packaging_flag = True
     )
     transaction_item.save()
+
+    dynamodb = boto3.resource('dynamodb')
+    client_lambda = boto3.client('lambda')
+
+    user_table = dynamodb.Table('BingsuUser')
+    response_user = user_table.query(
+        KeyConditionExpression=Key('user_id').eq(user_id))
+    old_coins = int(response_user['Items'][0]['coins'])
+    new_coins = old_coins + 2
+    arguments = {
+            "user_id": user_id,
+            "coins": new_coins,
+        }
+    update_user_response = client_lambda.invoke(
+        FunctionName = 'arn:aws:lambda:ap-southeast-1:405742985670:function:bingsuUser-UpdateUserFunction-9I54tc4Xyb2h',
+        InvocationType = 'RequestResponse',
+        Payload = json.dumps({'arguments': arguments})
+    )
+
     return {'status': 200}
     
